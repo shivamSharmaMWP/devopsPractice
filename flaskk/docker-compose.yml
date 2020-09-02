@@ -1,0 +1,9 @@
+version: '3'
+services:
+
+    comm:
+      container_name: communication_gateway
+      build:
+        context: comm_gateway
+      ports:
+        - 5000:5000
