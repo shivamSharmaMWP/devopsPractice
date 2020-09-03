@@ -2,8 +2,17 @@ version: '3'
 services:
 
     comm:
+      image: shivam111sharma/practice1:flask-0.1
       container_name: communication_gateway
       build:
         context: comm_gateway
       ports:
         - 5000:5000
+
+    comm:
+      image: shivam111sharma/practice1:flask2-0.1
+      container_name: communication_gateway_2
+      build:
+        context: comm_gateway_2
+      ports:
+        - 5002:5000
