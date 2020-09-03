@@ -9,7 +9,7 @@ services:
       ports:
         - 5000:5000
 
-    comm:
+    comm_2:
       image: shivam111sharma/practice1:flask2-0.1
       container_name: communication_gateway_2
       build:
