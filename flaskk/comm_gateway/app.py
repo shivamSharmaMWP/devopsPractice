@@ -7,7 +7,7 @@ app = Flask(__name__)
 @app.route("/")
 def hello():
 
-    return "----------------- Flask inside Docker 111111111111 )))))))))))))))))))))))) sdfasfdasdfanother!!" + socket.gethostname()
+    return "version qa Flask inside Docker !!" + socket.gethostname()
 
 @app.route("/send")
 def hello_send():

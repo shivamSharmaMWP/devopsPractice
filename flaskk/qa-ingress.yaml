@@ -1,0 +1,16 @@
+apiVersion: extensions/v1beta1
+
+kind: Ingress
+metadata:
+  name: qa-ingress-comm
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+  namespace: qa
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /qa
+        backend:
+          serviceName: qa-comm
+          servicePort: 5000

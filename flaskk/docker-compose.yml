@@ -9,10 +9,10 @@ services:
       ports:
         - 5000:5000
 
-    comm_2:
-      image: shivam111sharma/practice1:flask2-0.1
-      container_name: communication_gateway_2
-      build:
-        context: comm_gateway_2
-      ports:
-        - 5002:5000
+    # comm_2:
+    #   image: shivam111sharma/practice1:flask2-0.1
+    #   container_name: communication_gateway_2
+    #   build:
+    #     context: comm_gateway_2
+    #   ports:
+    #     - 5002:5000
