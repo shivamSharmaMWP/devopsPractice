@@ -2,7 +2,7 @@ apiVersion: extensions/v1beta1
 
 kind: Ingress
 metadata:
-  name: prod-ingress-comm
+  name: ingress-comm
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
   namespace: prod
@@ -10,7 +10,11 @@ spec:
   rules:
   - http:
       paths:
+      - path: / # the root path is pointing to prod
+        backend:
+          serviceName: comm
+          servicePort: 5000
       - path: /prod
         backend:
-          serviceName: prod-comm
+          serviceName: comm
           servicePort: 5000

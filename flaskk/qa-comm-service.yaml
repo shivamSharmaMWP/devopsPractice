@@ -6,8 +6,8 @@ metadata:
     kompose.version: 1.21.0 (992df58d8)
   creationTimestamp: null
   labels:
-    io.kompose.service: qa-comm
-  name: qa-comm
+    io.kompose.service: comm
+  name: comm
   namespace: qa
 spec:
   ports:
@@ -15,6 +15,6 @@ spec:
     port: 5000
     targetPort: 5000
   selector:
-    io.kompose.service: qa-comm
+    io.kompose.service: comm
 status:
   loadBalancer: {}
