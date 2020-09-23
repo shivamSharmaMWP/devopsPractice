@@ -1,0 +1,18 @@
+version: "3.8"
+x-aws-vpc: vpc-092533ada7c5c5a7e
+
+services:
+  web:
+    image: "shivam111sharma/practice1:ecsflask"
+    build: .
+    ports:
+      - "5000:5000"
+      - "5022:22"
+    environment:
+      REDIS: 'redis'
+    depends_on:
+      - redis
+  redis:
+    image: "redis:6.0"
+    # ports:
+    #   - "6379:6379"
