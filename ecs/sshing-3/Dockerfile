@@ -28,3 +28,5 @@ EXPOSE 22
 #CMD ["tail", "-f", "/dev/null"]
 
 ENTRYPOINT /usr/sbin/sshd -D && tail -f dev/null
+
+ENTRYPOINT /usr/sbin/sshd && tail -f dev/null

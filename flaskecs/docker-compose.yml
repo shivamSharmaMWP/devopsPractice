@@ -1,0 +1,30 @@
+version: '3'
+services:
+  flask1:
+    # image: shivam111sharma/practice1:flask-0.1
+    image: shivam111sharma/practice1:ecs-flask1-0
+    # image: madanmohan85/tsi:flask-0.2
+
+    container_name: flask1
+    build:
+      context: flask1
+    ports:
+      - 5000:5000
+    environment:
+      FLASK_2_URL: http://flask2:5001
+      REDIS: 'redis'
+
+  flask2:
+    image: shivam111sharma/practice1:ecs-flask2-0
+
+    container_name: flask2
+    build:
+      context: flask2
+    ports:
+      - 5001:5001
+
+  redis:
+    image: "redis:6.0"
+    container_name: redis
+    ports:
+      - "6379:6379"

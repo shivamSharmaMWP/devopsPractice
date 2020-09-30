@@ -25,9 +25,7 @@ spec:
         io.kompose.service: comm
     spec:
       containers:
-        - image: shivam111sharma/practice1:flask-0.1
-        - image: shivam111sharma/practice1:comm-1.0.1
-      
+      - image: shivam111sharma/practice1:flask-0.1
         imagePullPolicy: ""
         name: communication-gateway
         ports:

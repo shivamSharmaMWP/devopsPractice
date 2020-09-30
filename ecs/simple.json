@@ -1,0 +1,687 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Conditions": {
+    "CreateCluster": {
+      "Fn::Equals": [
+        "",
+        {
+          "Ref": "ParameterClusterName"
+        }
+      ]
+    },
+    "CreateLoadBalancer": {
+      "Fn::Equals": [
+        "",
+        {
+          "Ref": "ParameterLoadBalancerARN"
+        }
+      ]
+    }
+  },
+  "Description": "CloudFormation template created by Docker for deploying applications on Amazon ECS",
+  "Parameters": {
+    "ParameterClusterName": {
+      "Description": "Name of the ECS cluster to deploy to (optional)",
+      "Type": "String"
+    },
+    "ParameterLoadBalancerARN": {
+      "Description": "Name of the LoadBalancer to connect to (optional)",
+      "Type": "String"
+    },
+    "ParameterSubnet1Id": {
+      "Description": "SubnetId, for Availability Zone 1 in the region in your VPC",
+      "Type": "AWS::EC2::Subnet::Id"
+    },
+    "ParameterSubnet2Id": {
+      "Description": "SubnetId, for Availability Zone 2 in the region in your VPC",
+      "Type": "AWS::EC2::Subnet::Id"
+    },
+    "ParameterVPCId": {
+      "Description": "ID of the VPC",
+      "Type": "AWS::EC2::VPC::Id"
+    }
+  },
+  "Resources": {
+    "CloudMap": {
+      "Properties": {
+        "Description": "Service Map for Docker Compose project ecs",
+        "Name": "ecs.local",
+        "Vpc": {
+          "Ref": "ParameterVPCId"
+        }
+      },
+      "Type": "AWS::ServiceDiscovery::PrivateDnsNamespace"
+    },
+    "Cluster": {
+      "Condition": "CreateCluster",
+      "Properties": {
+        "ClusterName": "ecs",
+        "Tags": [
+          {
+            "Key": "com.docker.compose.project",
+            "Value": "ecs"
+          }
+        ]
+      },
+      "Type": "AWS::ECS::Cluster"
+    },
+    "EcsDefaultNetwork": {
+      "Properties": {
+        "GroupDescription": "ecs default Security Group",
+        "GroupName": "EcsDefaultNetwork",
+        "SecurityGroupIngress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "redis:6379/tcp",
+            "FromPort": 6379,
+            "IpProtocol": "TCP",
+            "ToPort": 6379
+          },
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "web:5000/tcp",
+            "FromPort": 5000,
+            "IpProtocol": "TCP",
+            "ToPort": 5000
+          },
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "web:22/tcp",
+            "FromPort": 22,
+            "IpProtocol": "TCP",
+            "ToPort": 22
+          }
+        ],
+        "Tags": [
+          {
+            "Key": "com.docker.compose.project",
+            "Value": "ecs"
+          },
+          {
+            "Key": "com.docker.compose.network",
+            "Value": "default"
+          }
+        ],
+        "VpcId": {
+          "Ref": "ParameterVPCId"
+        }
+      },
+      "Type": "AWS::EC2::SecurityGroup"
+    },
+    "EcsDefaultNetworkIngress": {
+      "Properties": {
+        "Description": "Allow communication within network default",
+        "GroupId": {
+          "Ref": "EcsDefaultNetwork"
+        },
+        "IpProtocol": "-1",
+        "SourceSecurityGroupId": {
+          "Ref": "EcsDefaultNetwork"
+        }
+      },
+      "Type": "AWS::EC2::SecurityGroupIngress"
+    },
+    "EcsLoadBalancer": {
+      "Condition": "CreateLoadBalancer",
+      "Properties": {
+        "Name": "EcsLoadBalancer",
+        "Scheme": "internet-facing",
+        "Subnets": [
+          {
+            "Ref": "ParameterSubnet1Id"
+          },
+          {
+            "Ref": "ParameterSubnet2Id"
+          }
+        ],
+        "Tags": [
+          {
+            "Key": "com.docker.compose.project",
+            "Value": "ecs"
+          }
+        ],
+        "Type": "network"
+      },
+      "Type": "AWS::ElasticLoadBalancingV2::LoadBalancer"
+    },
+    "LogGroup": {
+      "Properties": {
+        "LogGroupName": "/docker-compose/ecs"
+      },
+      "Type": "AWS::Logs::LogGroup"
+    },
+    "RedisService": {
+      "DependsOn": [
+        "RedisTCP6379Listener"
+      ],
+      "Properties": {
+        "Cluster": {
+          "Fn::If": [
+            "CreateCluster",
+            {
+              "Ref": "Cluster"
+            },
+            {
+              "Ref": "ParameterClusterName"
+            }
+          ]
+        },
+        "DeploymentConfiguration": {
+          "MaximumPercent": 200,
+          "MinimumHealthyPercent": 100
+        },
+        "DeploymentController": {
+          "Type": "ECS"
+        },
+        "DesiredCount": 1,
+        "LaunchType": "FARGATE",
+        "LoadBalancers": [
+          {
+            "ContainerName": "redis",
+            "ContainerPort": 6379,
+            "TargetGroupArn": {
+              "Ref": "RedisTCP6379TargetGroup"
+            }
+          }
+        ],
+        "NetworkConfiguration": {
+          "AwsvpcConfiguration": {
+            "AssignPublicIp": "ENABLED",
+            "SecurityGroups": [
+              {
+                "Ref": "EcsDefaultNetwork"
+              }
+            ],
+            "Subnets": [
+              {
+                "Ref": "ParameterSubnet1Id"
+              },
+              {
+                "Ref": "ParameterSubnet2Id"
+              }
+            ]
+          }
+        },
+        "PropagateTags": "SERVICE",
+        "SchedulingStrategy": "REPLICA",
+        "ServiceRegistries": [
+          {
+            "RegistryArn": {
+              "Fn::GetAtt": [
+                "RedisServiceDiscoveryEntry",
+                "Arn"
+              ]
+            }
+          }
+        ],
+        "Tags": [
+          {
+            "Key": "com.docker.compose.project",
+            "Value": "ecs"
+          },
+          {
+            "Key": "com.docker.compose.service",
+            "Value": "redis"
+          }
+        ],
+        "TaskDefinition": {
+          "Ref": "RedisTaskDefinition"
+        }
+      },
+      "Type": "AWS::ECS::Service"
+    },
+    "RedisServiceDiscoveryEntry": {
+      "Properties": {
+        "Description": "\"redis\" service discovery entry in Cloud Map",
+        "DnsConfig": {
+          "DnsRecords": [
+            {
+              "TTL": 60,
+              "Type": "A"
+            }
+          ],
+          "RoutingPolicy": "MULTIVALUE"
+        },
+        "HealthCheckCustomConfig": {
+          "FailureThreshold": 1
+        },
+        "Name": "redis",
+        "NamespaceId": {
+          "Ref": "CloudMap"
+        }
+      },
+      "Type": "AWS::ServiceDiscovery::Service"
+    },
+    "RedisTCP6379Listener": {
+      "Properties": {
+        "DefaultActions": [
+          {
+            "ForwardConfig": {
+              "TargetGroups": [
+                {
+                  "TargetGroupArn": {
+                    "Ref": "RedisTCP6379TargetGroup"
+                  }
+                }
+              ]
+            },
+            "Type": "forward"
+          }
+        ],
+        "LoadBalancerArn": {
+          "Fn::If": [
+            "CreateLoadBalancer",
+            {
+              "Ref": "EcsLoadBalancer"
+            },
+            {
+              "Ref": "ParameterLoadBalancerARN"
+            }
+          ]
+        },
+        "Port": 6379,
+        "Protocol": "TCP"
+      },
+      "Type": "AWS::ElasticLoadBalancingV2::Listener"
+    },
+    "RedisTCP6379TargetGroup": {
+      "Properties": {
+        "Port": 6379,
+        "Protocol": "TCP",
+        "Tags": [
+          {
+            "Key": "com.docker.compose.project",
+            "Value": "ecs"
+          }
+        ],
+        "TargetType": "ip",
+        "VpcId": {
+          "Ref": "ParameterVPCId"
+        }
+      },
+      "Type": "AWS::ElasticLoadBalancingV2::TargetGroup"
+    },
+    "RedisTaskDefinition": {
+      "Properties": {
+        "ContainerDefinitions": [
+          {
+            "Environment": [
+              {
+                "Name": "LOCALDOMAIN",
+                "Value": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ".compute.internal",
+                      " ecs.local"
+                    ]
+                  ]
+                }
+              }
+            ],
+            "Essential": true,
+            "Image": "redis:6.0",
+            "LinuxParameters": {},
+            "LogConfiguration": {
+              "LogDriver": "awslogs",
+              "Options": {
+                "awslogs-group": {
+                  "Ref": "LogGroup"
+                },
+                "awslogs-region": {
+                  "Ref": "AWS::Region"
+                },
+                "awslogs-stream-prefix": "ecs"
+              }
+            },
+            "Name": "redis",
+            "PortMappings": [
+              {
+                "ContainerPort": 6379,
+                "HostPort": 6379,
+                "Protocol": "tcp"
+              }
+            ]
+          }
+        ],
+        "Cpu": "256",
+        "ExecutionRoleArn": {
+          "Ref": "RedisTaskExecutionRole"
+        },
+        "Family": "ecs-redis",
+        "Memory": "512",
+        "NetworkMode": "awsvpc",
+        "RequiresCompatibilities": [
+          "FARGATE"
+        ]
+      },
+      "Type": "AWS::ECS::TaskDefinition"
+    },
+    "RedisTaskExecutionRole": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "sts:AssumeRole"
+              ],
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "ecs-tasks.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "ManagedPolicyArns": [
+          "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy",
+          "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+        ]
+      },
+      "Type": "AWS::IAM::Role"
+    },
+    "WebService": {
+      "DependsOn": [
+        "WebTCP5000Listener",
+        "WebTCP22Listener",
+        "RedisService"
+      ],
+      "Properties": {
+        "Cluster": {
+          "Fn::If": [
+            "CreateCluster",
+            {
+              "Ref": "Cluster"
+            },
+            {
+              "Ref": "ParameterClusterName"
+            }
+          ]
+        },
+        "DeploymentConfiguration": {
+          "MaximumPercent": 200,
+          "MinimumHealthyPercent": 100
+        },
+        "DeploymentController": {
+          "Type": "ECS"
+        },
+        "DesiredCount": 1,
+        "LaunchType": "FARGATE",
+        "LoadBalancers": [
+          {
+            "ContainerName": "web",
+            "ContainerPort": 5000,
+            "TargetGroupArn": {
+              "Ref": "WebTCP5000TargetGroup"
+            }
+          },
+          {
+            "ContainerName": "web",
+            "ContainerPort": 22,
+            "TargetGroupArn": {
+              "Ref": "WebTCP22TargetGroup"
+            }
+          }
+        ],
+        "NetworkConfiguration": {
+          "AwsvpcConfiguration": {
+            "AssignPublicIp": "ENABLED",
+            "SecurityGroups": [
+              {
+                "Ref": "EcsDefaultNetwork"
+              }
+            ],
+            "Subnets": [
+              {
+                "Ref": "ParameterSubnet1Id"
+              },
+              {
+                "Ref": "ParameterSubnet2Id"
+              }
+            ]
+          }
+        },
+        "PropagateTags": "SERVICE",
+        "SchedulingStrategy": "REPLICA",
+        "ServiceRegistries": [
+          {
+            "RegistryArn": {
+              "Fn::GetAtt": [
+                "WebServiceDiscoveryEntry",
+                "Arn"
+              ]
+            }
+          }
+        ],
+        "Tags": [
+          {
+            "Key": "com.docker.compose.project",
+            "Value": "ecs"
+          },
+          {
+            "Key": "com.docker.compose.service",
+            "Value": "web"
+          }
+        ],
+        "TaskDefinition": {
+          "Ref": "WebTaskDefinition"
+        }
+      },
+      "Type": "AWS::ECS::Service"
+    },
+    "WebServiceDiscoveryEntry": {
+      "Properties": {
+        "Description": "\"web\" service discovery entry in Cloud Map",
+        "DnsConfig": {
+          "DnsRecords": [
+            {
+              "TTL": 60,
+              "Type": "A"
+            }
+          ],
+          "RoutingPolicy": "MULTIVALUE"
+        },
+        "HealthCheckCustomConfig": {
+          "FailureThreshold": 1
+        },
+        "Name": "web",
+        "NamespaceId": {
+          "Ref": "CloudMap"
+        }
+      },
+      "Type": "AWS::ServiceDiscovery::Service"
+    },
+    "WebTCP22Listener": {
+      "Properties": {
+        "DefaultActions": [
+          {
+            "ForwardConfig": {
+              "TargetGroups": [
+                {
+                  "TargetGroupArn": {
+                    "Ref": "WebTCP22TargetGroup"
+                  }
+                }
+              ]
+            },
+            "Type": "forward"
+          }
+        ],
+        "LoadBalancerArn": {
+          "Fn::If": [
+            "CreateLoadBalancer",
+            {
+              "Ref": "EcsLoadBalancer"
+            },
+            {
+              "Ref": "ParameterLoadBalancerARN"
+            }
+          ]
+        },
+        "Port": 22,
+        "Protocol": "TCP"
+      },
+      "Type": "AWS::ElasticLoadBalancingV2::Listener"
+    },
+    "WebTCP22TargetGroup": {
+      "Properties": {
+        "Port": 22,
+        "Protocol": "TCP",
+        "Tags": [
+          {
+            "Key": "com.docker.compose.project",
+            "Value": "ecs"
+          }
+        ],
+        "TargetType": "ip",
+        "VpcId": {
+          "Ref": "ParameterVPCId"
+        }
+      },
+      "Type": "AWS::ElasticLoadBalancingV2::TargetGroup"
+    },
+    "WebTCP5000Listener": {
+      "Properties": {
+        "DefaultActions": [
+          {
+            "ForwardConfig": {
+              "TargetGroups": [
+                {
+                  "TargetGroupArn": {
+                    "Ref": "WebTCP5000TargetGroup"
+                  }
+                }
+              ]
+            },
+            "Type": "forward"
+          }
+        ],
+        "LoadBalancerArn": {
+          "Fn::If": [
+            "CreateLoadBalancer",
+            {
+              "Ref": "EcsLoadBalancer"
+            },
+            {
+              "Ref": "ParameterLoadBalancerARN"
+            }
+          ]
+        },
+        "Port": 5000,
+        "Protocol": "TCP"
+      },
+      "Type": "AWS::ElasticLoadBalancingV2::Listener"
+    },
+    "WebTCP5000TargetGroup": {
+      "Properties": {
+        "Port": 5000,
+        "Protocol": "TCP",
+        "Tags": [
+          {
+            "Key": "com.docker.compose.project",
+            "Value": "ecs"
+          }
+        ],
+        "TargetType": "ip",
+        "VpcId": {
+          "Ref": "ParameterVPCId"
+        }
+      },
+      "Type": "AWS::ElasticLoadBalancingV2::TargetGroup"
+    },
+    "WebTaskDefinition": {
+      "Properties": {
+        "ContainerDefinitions": [
+          {
+            "Environment": [
+              {
+                "Name": "REDIS",
+                "Value": "redis"
+              },
+              {
+                "Name": "LOCALDOMAIN",
+                "Value": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ".compute.internal",
+                      " ecs.local"
+                    ]
+                  ]
+                }
+              }
+            ],
+            "Essential": true,
+            "Image": "shivam111sharma/practice1:ecsflask",
+            "LinuxParameters": {},
+            "LogConfiguration": {
+              "LogDriver": "awslogs",
+              "Options": {
+                "awslogs-group": {
+                  "Ref": "LogGroup"
+                },
+                "awslogs-region": {
+                  "Ref": "AWS::Region"
+                },
+                "awslogs-stream-prefix": "ecs"
+              }
+            },
+            "Name": "web",
+            "PortMappings": [
+              {
+                "ContainerPort": 5000,
+                "HostPort": 5000,
+                "Protocol": "tcp"
+              },
+              {
+                "ContainerPort": 22,
+                "HostPort": 22,
+                "Protocol": "tcp"
+              }
+            ]
+          }
+        ],
+        "Cpu": "256",
+        "ExecutionRoleArn": {
+          "Ref": "WebTaskExecutionRole"
+        },
+        "Family": "ecs-web",
+        "Memory": "512",
+        "NetworkMode": "awsvpc",
+        "RequiresCompatibilities": [
+          "FARGATE"
+        ]
+      },
+      "Type": "AWS::ECS::TaskDefinition"
+    },
+    "WebTaskExecutionRole": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "sts:AssumeRole"
+              ],
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "ecs-tasks.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "ManagedPolicyArns": [
+          "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy",
+          "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+        ]
+      },
+      "Type": "AWS::IAM::Role"
+    }
+  }
+}

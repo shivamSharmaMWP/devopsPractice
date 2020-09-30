@@ -1,0 +1,196 @@
+INFO:werkzeug: * Running on http://0.0.0.0:5084/ (Press CTRL+C to quit)
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 258-239-576
+INFO:werkzeug:172.23.0.1 - - [30/Jul/2020 10:19:45] "[37mGET /first HTTP/1.1[0m" 200 -
+INFO:root:info log /
+DEBUG:root:debug log / 
+ERROR:root:error log /
+CRITICAL:root:critical log /
+INFO:werkzeug:172.23.0.1 - - [30/Jul/2020 10:19:53] "[37mGET / HTTP/1.1[0m" 200 -
+INFO:werkzeug: * Running on http://0.0.0.0:5084/ (Press CTRL+C to quit)
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 258-239-576
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 258-239-576
+INFO:werkzeug: * Running on http://0.0.0.0:5084/ (Press CTRL+C to quit)
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 258-239-576
+INFO:werkzeug: * Detected change in '/opt/workdir/app.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 258-239-576
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 258-239-576
+INFO:werkzeug: * Detected change in '/opt/workdir/app.py', reloading
+INFO:werkzeug: * Running on http://0.0.0.0:5084/ (Press CTRL+C to quit)
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 258-239-576
+INFO:log1:info log /
+DEBUG:log1:debug log / 
+ERROR:log1:error log /
+CRITICAL:log1:critical log /
+INFO:werkzeug:172.23.0.1 - - [30/Jul/2020 11:00:35] "[37mGET / HTTP/1.1[0m" 200 -
+INFO:log1:info log /
+DEBUG:log1:debug log / 
+ERROR:log1:error log /
+CRITICAL:log1:critical log /
+INFO:werkzeug:172.23.0.1 - - [30/Jul/2020 11:00:36] "[37mGET / HTTP/1.1[0m" 200 -
+INFO:log1:info log /
+DEBUG:log1:debug log / 
+ERROR:log1:error log /
+CRITICAL:log1:critical log /
+INFO:werkzeug:172.23.0.1 - - [30/Jul/2020 11:00:36] "[37mGET / HTTP/1.1[0m" 200 -
+INFO:log1:info log /
+DEBUG:log1:debug log / 
+ERROR:log1:error log /
+CRITICAL:log1:critical log /
+INFO:werkzeug:172.23.0.1 - - [30/Jul/2020 11:00:36] "[37mGET / HTTP/1.1[0m" 200 -
+INFO:log1:info log /
+DEBUG:log1:debug log / 
+ERROR:log1:error log /
+CRITICAL:log1:critical log /
+INFO:werkzeug:172.23.0.1 - - [30/Jul/2020 11:00:36] "[37mGET / HTTP/1.1[0m" 200 -
+INFO:werkzeug: * Running on http://0.0.0.0:5084/ (Press CTRL+C to quit)
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 258-239-576
+INFO:log1:info log /
+DEBUG:log1:debug log / 
+ERROR:log1:error log /
+CRITICAL:log1:critical log /
+INFO:werkzeug:172.23.0.1 - - [30/Jul/2020 11:00:43] "[37mGET / HTTP/1.1[0m" 200 -
+INFO:log1:info log /
+DEBUG:log1:debug log / 
+ERROR:log1:error log /
+CRITICAL:log1:critical log /
+INFO:werkzeug:172.23.0.1 - - [30/Jul/2020 11:00:43] "[37mGET / HTTP/1.1[0m" 200 -
+INFO:log1:info log /
+DEBUG:log1:debug log / 
+ERROR:log1:error log /
+CRITICAL:log1:critical log /
+INFO:werkzeug:172.23.0.1 - - [30/Jul/2020 11:00:43] "[37mGET / HTTP/1.1[0m" 200 -
+INFO:log1:info log /
+DEBUG:log1:debug log / 
+ERROR:log1:error log /
+CRITICAL:log1:critical log /
+INFO:werkzeug:172.23.0.1 - - [30/Jul/2020 11:00:43] "[37mGET / HTTP/1.1[0m" 200 -
+INFO:werkzeug: * Detected change in '/opt/workdir/app.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 258-239-576
+INFO:werkzeug: * Detected change in '/opt/workdir/app.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 258-239-576
+INFO:werkzeug: * Detected change in '/opt/workdir/app.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 258-239-576
+INFO:werkzeug: * Running on http://0.0.0.0:5084/ (Press CTRL+C to quit)
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 258-239-576
+INFO:log1:info log /
+DEBUG:log1:debug log / 
+ERROR:log1:error log /
+CRITICAL:log1:critical log /
+INFO:werkzeug:172.23.0.1 - - [30/Jul/2020 11:01:59] "[37mGET / HTTP/1.1[0m" 200 -
+INFO:log1:info log /
+DEBUG:log1:debug log / 
+ERROR:log1:error log /
+CRITICAL:log1:critical log /
+INFO:werkzeug:172.23.0.1 - - [30/Jul/2020 11:01:59] "[37mGET / HTTP/1.1[0m" 200 -
+INFO:log1:info log /
+DEBUG:log1:debug log / 
+ERROR:log1:error log /
+CRITICAL:log1:critical log /
+INFO:werkzeug:172.23.0.1 - - [30/Jul/2020 11:02:00] "[37mGET / HTTP/1.1[0m" 200 -
+INFO:log1:info log /
+DEBUG:log1:debug log / 
+ERROR:log1:error log /
+CRITICAL:log1:critical log /
+INFO:werkzeug:172.23.0.1 - - [30/Jul/2020 11:02:00] "[37mGET / HTTP/1.1[0m" 200 -
+INFO:log1:info log /
+DEBUG:log1:debug log / 
+ERROR:log1:error log /
+CRITICAL:log1:critical log /
+INFO:werkzeug:172.23.0.1 - - [30/Jul/2020 11:02:00] "[37mGET / HTTP/1.1[0m" 200 -
+INFO:log1:info log /
+DEBUG:log1:debug log / 
+ERROR:log1:error log /
+CRITICAL:log1:critical log /
+INFO:werkzeug:172.23.0.1 - - [30/Jul/2020 11:02:00] "[37mGET / HTTP/1.1[0m" 200 -
+INFO:log1:info log /
+DEBUG:log1:debug log / 
+ERROR:log1:error log /
+CRITICAL:log1:critical log /
+INFO:werkzeug:172.23.0.1 - - [30/Jul/2020 11:02:00] "[37mGET / HTTP/1.1[0m" 200 -
+INFO:log1:info log /
+DEBUG:log1:debug log / 
+ERROR:log1:error log /
+CRITICAL:log1:critical log /
+INFO:werkzeug:172.23.0.1 - - [30/Jul/2020 11:02:01] "[37mGET / HTTP/1.1[0m" 200 -
+INFO:log1:info log /
+DEBUG:log1:debug log / 
+ERROR:log1:error log /
+CRITICAL:log1:critical log /
+INFO:werkzeug:172.23.0.1 - - [30/Jul/2020 11:02:01] "[37mGET / HTTP/1.1[0m" 200 -
+INFO:log1:info log /
+DEBUG:log1:debug log / 
+ERROR:log1:error log /
+CRITICAL:log1:critical log /
+INFO:werkzeug:172.23.0.1 - - [30/Jul/2020 11:02:02] "[37mGET / HTTP/1.1[0m" 200 -
+INFO:log1:info log /
+DEBUG:log1:debug log / 
+ERROR:log1:error log /
+CRITICAL:log1:critical log /
+INFO:werkzeug:172.23.0.1 - - [30/Jul/2020 11:02:02] "[37mGET / HTTP/1.1[0m" 200 -
+INFO:log1:info log /
+DEBUG:log1:debug log / 
+ERROR:log1:error log /
+CRITICAL:log1:critical log /
+INFO:werkzeug:172.23.0.1 - - [30/Jul/2020 11:02:02] "[37mGET / HTTP/1.1[0m" 200 -
+INFO:log1:info log /
+DEBUG:log1:debug log / 
+ERROR:log1:error log /
+CRITICAL:log1:critical log /
+INFO:werkzeug:172.23.0.1 - - [30/Jul/2020 11:02:02] "[37mGET / HTTP/1.1[0m" 200 -
+INFO:log1:info log /
+DEBUG:log1:debug log / 
+ERROR:log1:error log /
+CRITICAL:log1:critical log /
+INFO:werkzeug:172.23.0.1 - - [30/Jul/2020 11:02:02] "[37mGET / HTTP/1.1[0m" 200 -
+INFO:log1:info log /
+DEBUG:log1:debug log / 
+ERROR:log1:error log /
+CRITICAL:log1:critical log /
+INFO:werkzeug:172.23.0.1 - - [30/Jul/2020 11:02:45] "[37mGET / HTTP/1.1[0m" 200 -
+INFO:log1:info log /
+DEBUG:log1:debug log / 
+ERROR:log1:error log /
+CRITICAL:log1:critical log /
+INFO:werkzeug:172.23.0.1 - - [30/Jul/2020 11:02:46] "[37mGET / HTTP/1.1[0m" 200 -
+INFO:log1:info log /
+DEBUG:log1:debug log / 
+ERROR:log1:error log /
+CRITICAL:log1:critical log /
+INFO:werkzeug:172.23.0.1 - - [30/Jul/2020 11:02:46] "[37mGET / HTTP/1.1[0m" 200 -
+INFO:log1:info log /
+DEBUG:log1:debug log / 
+ERROR:log1:error log /
+CRITICAL:log1:critical log /
+INFO:werkzeug:172.23.0.1 - - [30/Jul/2020 11:02:46] "[37mGET / HTTP/1.1[0m" 200 -
+INFO:log1:info log /
+DEBUG:log1:debug log / 
+ERROR:log1:error log /
+CRITICAL:log1:critical log /
+INFO:werkzeug:172.23.0.1 - - [30/Jul/2020 11:02:46] "[37mGET / HTTP/1.1[0m" 200 -
+INFO:log1:info log /
+DEBUG:log1:debug log / 
+ERROR:log1:error log /
+CRITICAL:log1:critical log /
+INFO:werkzeug:172.23.0.1 - - [30/Jul/2020 11:02:57] "[37mGET / HTTP/1.1[0m" 200 -

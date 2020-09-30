@@ -1,0 +1,21 @@
+INFO:werkzeug: * Running on http://0.0.0.0:5084/ (Press CTRL+C to quit)
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 258-239-576
+INFO:werkzeug:172.23.0.1 - - [30/Jul/2020 10:15:38] "[37mGET /first HTTP/1.1[0m" 200 -
+INFO:werkzeug:172.23.0.1 - - [30/Jul/2020 10:15:39] "[37mGET /first HTTP/1.1[0m" 200 -
+INFO:werkzeug:172.23.0.1 - - [30/Jul/2020 10:15:39] "[37mGET /first HTTP/1.1[0m" 200 -
+INFO:werkzeug:172.23.0.1 - - [30/Jul/2020 10:15:39] "[37mGET /first HTTP/1.1[0m" 200 -
+INFO:werkzeug:172.23.0.1 - - [30/Jul/2020 10:15:39] "[37mGET /first HTTP/1.1[0m" 200 -
+INFO:werkzeug: * Running on http://0.0.0.0:5084/ (Press CTRL+C to quit)
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 258-239-576
+INFO:werkzeug:172.23.0.1 - - [30/Jul/2020 10:17:26] "[37mGET /first HTTP/1.1[0m" 200 -
+INFO:werkzeug:172.23.0.1 - - [30/Jul/2020 10:17:26] "[37mGET /first HTTP/1.1[0m" 200 -
+INFO:werkzeug:172.23.0.1 - - [30/Jul/2020 10:17:26] "[37mGET /first HTTP/1.1[0m" 200 -
+INFO:werkzeug: * Running on http://0.0.0.0:5084/ (Press CTRL+C to quit)
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 258-239-576
+INFO:werkzeug:172.23.0.1 - - [30/Jul/2020 10:18:46] "[37mGET /first HTTP/1.1[0m" 200 -

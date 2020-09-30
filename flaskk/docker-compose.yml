@@ -1,18 +1,24 @@
 version: '3'
 services:
 
-    comm:
-      image: shivam111sharma/practice1:flask-0.1
-      container_name: communication_gateway
+    backend:
+      # image: shivam111sharma/practice1:flask-0.1
+      image: shivam111sharma/practice1:flaskk-0.4
+      # image: madanmohan85/tsi:flask-0.2
+
+      container_name: flaskk
       build:
         context: comm_gateway
       ports:
         - 5000:5000
+      environment:
+        - FULLNAME=http://worker:5001
 
-    # comm_2:
-    #   image: shivam111sharma/practice1:flask2-0.1
-    #   container_name: communication_gateway_2
-    #   build:
-    #     context: comm_gateway_2
-    #   ports:
-    #     - 5002:5000
+    worker:
+      image: shivam111sharma/practice1:flaskk-2-0.4
+      # container_name: communication_gateway_2
+      container_name: flaskk-2
+      build:
+        context: comm_gateway_2
+      ports:
+        - 5001:5001

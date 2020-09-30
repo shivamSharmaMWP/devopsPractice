@@ -1,18 +1,19 @@
 version: "3.8"
-x-aws-vpc: vpc-092533ada7c5c5a7e
-
+#x-aws-vpc: vpc-0d30fe354fdd0e8c2 # quovantis account
+x-aws-vpc: vpc-ab9907cd # teensmart account
+# x-aws-vpc: vpc-1df31560 # madan account
 services:
   web:
     image: "shivam111sharma/practice1:ecsflask"
     build: .
     ports:
       - "5000:5000"
-      - "5022:22"
+      - "22:22"
     environment:
       REDIS: 'redis'
     depends_on:
       - redis
   redis:
     image: "redis:6.0"
-    # ports:
-    #   - "6379:6379"
+    ports:
+      - "6379:6379"

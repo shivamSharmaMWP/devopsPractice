@@ -6,7 +6,7 @@ from flask import Flask
 import os
 
 app = Flask(__name__)
-cache = redis.Redis("redis", port=6379)
+cache = redis.Redis(os.getenv('REDIS'), port=6379)
 
 
 def get_hit_count():
@@ -27,6 +27,8 @@ def hello():
     return 'Hello World! I have been seen {} times.\n'.format(count)
 
 
-# if __name__ == "__main__":
-#
-#     app.run(debug=True, port=5000, host='0.0.0.0')
+if __name__ == "__main__":
+
+    app.run(debug=True, port=5000, host='0.0.0.0')
+
+# redis.Redis("redis", port=6379).incr('hits')
